@@ -1,0 +1,45 @@
+#include <Arduino.h>
+
+// GPIOs
+const int PIN_OUT = 5;   // vai gerar um sinal
+const int PIN_IN  = 6;   // vai medir o sinal
+
+// Medição
+unsigned long lastTime = 0;
+unsigned long pulseCount = 0;
+
+void IRAM_ATTR handlePulse() {
+    pulseCount++;
+}
+
+void setup() {
+    Serial.begin(115200);
+
+    pinMode(PIN_OUT, OUTPUT);
+    pinMode(PIN_IN, INPUT_PULLUP);
+
+    // Gerar interrupção a cada subida de sinal no pino 6
+    attachInterrupt(digitalPinToInterrupt(PIN_IN), handlePulse, RISING);
+
+    Serial.println("Frequency test started.");
+}
+
+void loop() {
+    // --- Gerar o sinal no PIN_OUT ---
+    digitalWrite(PIN_OUT, HIGH);
+    delayMicroseconds(500);   // frequência ≈ 2.5 kHz
+    digitalWrite(PIN_OUT, LOW);
+    delayMicroseconds(200);
+
+    // --- A cada 1000ms calcular frequencia ---
+    if (millis() - lastTime >= 1000) {
+        lastTime = millis();
+
+        unsigned long f = pulseCount; // 1 pulso por ciclo
+        pulseCount = 0;
+
+        Serial.print("Frequency: ");
+        Serial.print(f);
+        Serial.println(" Hz");
+    }
+}

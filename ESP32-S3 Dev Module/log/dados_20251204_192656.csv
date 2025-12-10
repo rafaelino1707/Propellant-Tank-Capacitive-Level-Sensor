@@ -1,0 +1,21 @@
+sample_index,elapsed_ms,pulses,freq_Hz
+ESP-ROM:esp32s3-20210327
+Build:Mar 27 2021
+rst:0x1 (POWERON),boot:0x8 (SPI_FAST_FLASH_BOOT)
+SPIWP:0xee
+Octal Flash Mode Enabled
+For OPI Flash, Use Default Flash Boot Mode
+mode:SLOW_RD, clock div:1
+load:0x3fce3808,len:0x41c
+load:0x403c9700,len:0x9a8
+load:0x403cc700,len:0x28d0
+entry 0x403c98b8
+0,2000,9215,4607.50
+1,4050,9216,4608.00
+2,6100,9212,4606.00
+3,8150,9218,4609.00
+4,10200,9210,4605.00
+5,12250,9219,4609.50
+6,14300,9211,4605.50
+7,16350,9218,4609.00
+8,18400,9220,4610.00
