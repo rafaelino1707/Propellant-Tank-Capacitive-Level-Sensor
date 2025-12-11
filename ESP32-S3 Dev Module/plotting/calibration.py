@@ -1,21 +1,24 @@
 import numpy as np
 
 # Põe aqui os teus valores médios, MESMA unidade (por ex. pF)
-C_nom = np.array([10, 47, 100, 220], dtype=float)      # nominal
-C_est = np.array([C10m, C47m, C100m, C220m], dtype=float)  # medias medidas
+C_nom = np.array([10, 15, 33, 47, 68, 100, 150, 220], dtype=float)      # nominal
+C_est = np.array([28, 32, 51, 66, 88, 121, 166, 225.99], dtype=float)  # medias medidas
 
-N = len(C_nom)
-Sx  = np.sum(C_est)
-Sy  = np.sum(C_nom)
-Sxx = np.sum(C_est**2)
-Sxy = np.sum(C_est * C_nom)
+# regressão: C_est = m*C_nom + c
+N   = len(C_nom)
+Sx  = np.sum(C_nom)
+Sy  = np.sum(C_est)
+Sxx = np.sum(C_nom**2)
+Sxy = np.sum(C_nom * C_est)
 
-a = (N*Sxy - Sx*Sy)/(N*Sxx - Sx**2)
-b = (Sy - a*Sx)/N
+m = (N*Sxy - Sx*Sy) / (N*Sxx - Sx**2)
+c = (Sy - m*Sx) / N
 
-print("a =", a)
-print("b =", b)
+print("m =", m)
+print("c =", c)
 
-# fator simples (sem offset), se quiseres comparar
-k = np.sum(C_nom * C_est) / np.sum(C_est**2)
-print("k =", k)
+# verifica como fica a inversa:
+C_est_test = C_est
+C_real_est = (C_est_test - c) / m
+print("nominal:", C_nom)
+print("recovered:", C_real_est)
