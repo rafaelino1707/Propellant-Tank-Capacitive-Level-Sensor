@@ -22,13 +22,24 @@ void loop()
     static uint32_t t0_ms = millis();
 
     // Average Frequency with Outliers Rejection
-    float freq_Hz = pcnt_measure_frequency_avg(SAMPLE_TIME_MS, N_WINDOWS_AVG)/0.86;
+    float freq_Hz = pcnt_measure_frequency_avg(SAMPLE_TIME_MS, N_WINDOWS_AVG);
 
     uint32_t now_ms = millis();
     uint32_t elapsed_ms = now_ms - t0_ms;
 
     // Stimating Capacitance
     double C_est_F = pcnt_freq_to_capacitance_F(freq_Hz, 0.5e6, 1e6);
+
+    // --- Reset command via Serial ---
+    if (Serial.available()) {
+        char c = Serial.read();
+        if (c == 'R' || c == 'r') {
+            sampleIndex = 0;
+            t0_ms = millis();
+            Serial.println("=== RESET COUNTER AND TIMER ===");
+        }
+    }
+
 
     // CSV: sample_index,elapsed_ms,freq_Hz,C_est_F
     Serial.print(sampleIndex);
