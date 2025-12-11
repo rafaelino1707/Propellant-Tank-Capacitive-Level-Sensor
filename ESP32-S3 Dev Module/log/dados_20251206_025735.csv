@@ -1,4 +1,4 @@
-sample_index,elapsed_ms,freq_Hz,C_est_F
+dsample_index,elapsed_ms,freq_Hz,C_est_F
 0,3999,1046.500,0.000000000104
 1,8049,1050.750,0.000000000103
 2,12099,1047.500,0.000000000104
