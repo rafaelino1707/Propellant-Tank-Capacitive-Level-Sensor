@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include "pulsecounting.h"
 
-#define SENSOR_GPIO     38
+#define SENSOR_GPIO     40
 #define SAMPLE_TIME_MS  200
 #define N_WINDOWS_AVG   10
 
