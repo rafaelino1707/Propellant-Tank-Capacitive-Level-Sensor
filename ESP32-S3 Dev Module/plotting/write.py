@@ -16,7 +16,7 @@ ser = serial.Serial(PORT, BAUD, timeout=TIMEOUT)
 # -----------------------------------
 os.makedirs("log", exist_ok=True)
 #fname = f"log/dados_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
-fname = f"log/aaaapF.csv"
+fname = f"log/aabapF.csv"
 print("A gravar CSV em:", fname)
 
 f = open(fname, "w", encoding="utf-8")

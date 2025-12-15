@@ -1,8 +1,8 @@
 import numpy as np
 
 # Põe aqui os teus valores médios, MESMA unidade (por ex. pF)
-C_nom = np.array([10, 15, 33, 47, 68, 100, 150, 220], dtype=float)      # nominal
-C_est = np.array([28, 32, 51, 66, 88, 121, 166, 225.99], dtype=float)  # medias medidas
+C_nom = np.array([10, 15, 20, 33, 35, 47, 68, 100, 150, 220], dtype=float)      # nominal
+C_est = np.array([26, 30, 36, 49, 50, 63, 85, 117, 163, 230], dtype=float)  # medias medidas
 
 # regressão: C_est = m*C_nom + c
 N   = len(C_nom)
