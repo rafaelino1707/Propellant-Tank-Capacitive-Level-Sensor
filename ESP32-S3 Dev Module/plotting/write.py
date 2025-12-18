@@ -3,45 +3,54 @@ import os
 from datetime import datetime
 
 # -----------------------------------
-# Configuração da porta série
+# Porta série
 # -----------------------------------
 PORT = "COM5"
 BAUD = 115200
-TIMEOUT = 1  # segundos
+TIMEOUT = 1
 
 ser = serial.Serial(PORT, BAUD, timeout=TIMEOUT)
 
 # -----------------------------------
-# Nome e pasta do ficheiro CSV
+# CSV
 # -----------------------------------
 os.makedirs("log", exist_ok=True)
-#fname = f"log/dados_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
-fname = f"log/aabapF.csv"
+fname = f"log/dados_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
 print("A gravar CSV em:", fname)
 
-f = open(fname, "w", encoding="utf-8")
+HEADER = (
+    "sample_index,elapsed_ms,"
+    "f_meas_Hz,f_from_Craw_Hz,f_from_Ccal_Hz,"
+    "C_raw_pF,C_cal_pF,"
+    "Tgate_s,df_Hz,"
+    "dCraw_pF_per_df,dCcal_pF_per_df,"
+    "N_counts,bits_eq"
+)
 
-# Se quiseres forçar um header fixo, descomenta esta linha:
-# f.write("sample_index,elapsed_ms,freq_Hz,C_est_F\n")
+f = open(fname, "w", encoding="utf-8")
+f.write(HEADER + "\n")
+f.flush()
 
 try:
     while True:
-        # Lê uma linha da série
         raw = ser.readline().decode(errors="ignore").strip()
         if not raw:
             continue
 
-        # Opcional: ignorar linha de header vinda da ESP32
-        if raw.startswith("sample_index"):
-            # Se quiseres escrever o header vindo da ESP32 no ficheiro,
-            # podes fazer:
-            # f.write(raw + "\n")
-            # f.flush()
+        # ignora headers / mensagens
+        if raw.startswith("sample_index") or raw.startswith("==="):
             continue
 
-        print(raw)          # eco no terminal (podes comentar se não quiseres)
-        f.write(raw + "\n") # grava no CSV
-        f.flush()           # força escrita imediata em disco
+        # opcional: garante nº de colunas
+        parts = raw.split(",")
+        if len(parts) != 13:
+            # se quiseres ver o que está a falhar:
+            print("IGNORED (cols != 13):", raw)
+            continue
+
+        print(raw)
+        f.write(raw + "\n")
+        f.flush()
 
 except KeyboardInterrupt:
     print("Terminou (CTRL+C).")
